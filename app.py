@@ -15,6 +15,7 @@ def home():
 
 @app.route('/upload', methods=['POST'])
 def upload():
+    print("Hey this function is just working fine")
     name = request.form.get('name')
     email = request.form.get('email')
     title = request.form.get('title')
