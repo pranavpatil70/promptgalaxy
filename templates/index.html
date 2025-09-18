@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Google tag (gtag.js) -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-TTMMH3PGEC"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -10,259 +12,580 @@
 
   gtag('config', 'G-TTMMH3PGEC');
 </script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prompt Gallery</title>
+
+    <title>Prompt Galaxy - Where AI Art Comes Alive</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
         :root {
-            --bg-primary: #ffffff;
-            --bg-secondary: #f8f9fa;
-            --text-primary: #212529;
-            --text-secondary: #6c757d;
-            --accent: #4a69bd;
-            --card-bg: #ffffff;
-            --border-color: #dee2e6;
-            --success: #4caf50;
-            --info: #2196f3;
-            --warning: #ff9800;
-            --error: #f44336;
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #111111;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --accent: #8b5cf6;
+            --accent-secondary: #06ffa5;
+            --card-bg: rgba(17, 17, 17, 0.8);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --success: #00ff88;
+            --warning: #ffb347;
+            --error: #ff6b6b;
+            --glass: rgba(255, 255, 255, 0.05);
         }
 
-        .dark-mode {
-            --bg-primary: #121212;
-            --bg-secondary: #1e1e1e;
-            --text-primary: #f8f9fa;
-            --text-secondary: #adb5bd;
-            --card-bg: #1e1e1e;
-            --border-color: #343a40;
+        .light-mode {
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --text-primary: #1a202c;
+            --text-secondary: #718096;
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --border-color: rgba(0, 0, 0, 0.1);
+            --glass: rgba(0, 0, 0, 0.02);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            transition: background-color 0.3s, color 0.3s;
         }
 
         body {
-            background-color: var(--bg-primary);
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
             color: var(--text-primary);
             line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: radial-gradient(ellipse at center, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+                        radial-gradient(ellipse at 80% 20%, rgba(6, 255, 165, 0.1) 0%, transparent 50%),
+                        radial-gradient(ellipse at 20% 80%, rgba(255, 107, 107, 0.1) 0%, transparent 50%);
+            animation: bgShift 20s ease-in-out infinite;
+        }
+
+        @keyframes bgShift {
+            0%, 100% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.1); }
+        }
+
+        /* Floating particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--accent);
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
         }
 
         header {
-            background-color: var(--bg-secondary);
-            padding: 1.5rem 2rem;
-            position: sticky;
+            position: fixed;
             top: 0;
-            z-index: 100;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            background: rgba(10, 10, 10, 0.7);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .header-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
         }
 
         .logo {
-            font-size: 1.8rem;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
             font-weight: 700;
-            letter-spacing: -1px;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -2px;
+            text-decoration: none;
+            transition: all 0.3s ease;
         }
 
-        .logo span {
-            color: var(--accent);
+        .logo:hover {
+            transform: scale(1.05);
+            filter: drop-shadow(0 0 20px rgba(139, 92, 246, 0.5));
+        }
+
+        .nav-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
         }
 
         .theme-toggle {
-            background: none;
-            border: none;
+            background: var(--glass);
+            border: 1px solid var(--border-color);
             color: var(--text-primary);
             cursor: pointer;
-            font-size: 1.5rem;
+            font-size: 1.2rem;
+            padding: 0.8rem;
+            border-radius: 50%;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+        }
+
+        .theme-toggle:hover {
+            background: var(--accent);
+            transform: rotate(180deg) scale(1.1);
+            box-shadow: 0 0 30px rgba(139, 92, 246, 0.5);
         }
 
         .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             text-align: center;
-            padding: 5rem 2rem;
-            background-color: var(--bg-secondary);
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.3) 0%, transparent 70%);
+            transform: translate(-50%, -50%);
+            animation: pulse 4s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; }
+            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.1; }
         }
 
         .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(3rem, 8vw, 8rem);
+            font-weight: 800;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 50%, var(--accent-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.1;
+            letter-spacing: -3px;
+            animation: titleGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes titleGlow {
+            0%, 100% { filter: drop-shadow(0 0 10px rgba(139, 92, 246, 0.3)); }
+            50% { filter: drop-shadow(0 0 30px rgba(139, 92, 246, 0.6)); }
         }
 
         .hero p {
-            font-size: 1.2rem;
+            font-size: 1.5rem;
             max-width: 700px;
-            margin: 0 auto 2rem;
+            margin: 0 auto 3rem;
             color: var(--text-secondary);
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 0.5s forwards;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .cta-button {
-            background-color: var(--accent);
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-secondary) 100%);
             color: white;
             border: none;
-            padding: 1rem 2rem;
-            font-size: 1rem;
+            padding: 1.5rem 3rem;
+            font-size: 1.2rem;
             font-weight: 600;
-            border-radius: 8px;
+            border-radius: 50px;
             cursor: pointer;
-            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 10px 40px rgba(139, 92, 246, 0.3);
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 0.8s forwards;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.7s;
         }
 
         .cta-button:hover {
-            background-color: #3a58a8;
-            transform: translateY(-2px);
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 20px 60px rgba(139, 92, 246, 0.5);
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 4rem 2rem;
+            padding: 6rem 2rem;
+            position: relative;
         }
 
         .section-title {
             text-align: center;
-            margin-bottom: 3rem;
+            margin-bottom: 4rem;
+            position: relative;
+        }
+
+        .section-title::before {
+            content: '';
+            position: absolute;
+            top: -2rem;
+            left: 50%;
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-secondary));
+            transform: translateX(-50%);
+            border-radius: 2px;
         }
 
         .section-title h2 {
-            font-size: 2.5rem;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
             margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
-        .section-title p {
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            padding: 2rem 0;
+        }
+
+        .prompt-card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .prompt-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .prompt-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(6, 255, 165, 0.1));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+
+        .prompt-card:hover {
+            transform: translateY(-10px) rotateX(5deg);
+            box-shadow: 0 25px 80px rgba(139, 92, 246, 0.3);
+            border-color: rgba(139, 92, 246, 0.5);
+        }
+
+        .prompt-card:hover::before {
+            opacity: 1;
+        }
+
+        .prompt-image {
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 4/5;
+        }
+
+        .prompt-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+            filter: brightness(0.9);
+        }
+
+        .prompt-card:hover .prompt-image img {
+            transform: scale(1.1);
+            filter: brightness(1.1);
+        }
+
+        .prompt-image::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            pointer-events: none;
+        }
+
+        .prompt-content {
+            padding: 2rem;
+            position: relative;
+        }
+
+        .copy-button {
+            position: absolute;
+            top: -25px;
+            right: 2rem;
+            background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 0.8rem 1.5rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(139, 92, 246, 0.4);
+            z-index: 10;
+        }
+
+        .copy-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(139, 92, 246, 0.6);
+        }
+
+        .prompt-content h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .prompt-text {
             color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.7;
+            max-height: 120px;
+            overflow-y: auto;
+            margin-bottom: 1.5rem;
+            padding-right: 0.5rem;
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent) transparent;
+        }
+
+        .prompt-text::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .prompt-text::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 2px;
+        }
+
+        .prompt-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .social-links a {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            padding: 0.5rem;
+            border-radius: 50%;
+            background: var(--glass);
+        }
+
+        .social-links a:hover {
+            color: var(--accent);
+            background: rgba(139, 92, 246, 0.2);
+            transform: translateY(-3px);
+        }
+
+        .submit-section {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border-radius: 32px;
+            padding: 3rem;
             max-width: 600px;
             margin: 0 auto;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
         }
 
-        /* Pinterest-style masonry layout using CSS columns */
-.gallery {
-    column-count: 3;
-    column-gap: 2rem;
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0;
-}
+        .form-group {
+            margin-bottom: 2rem;
+        }
 
-/* Each card is inline-block so it fits naturally in the masonry columns */
-.prompt-card {
-    display: inline-block;
-    width: 100%;
-    margin: 0 0 2rem 0;
-    background: var(--card-bg);
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-    border: 1px solid var(--border-color);
-    vertical-align: top;
-}
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
 
-/* Prompt image: keep aspect ratio, no fixed height */
-.prompt-image img {
-    width: 100%;
-    height: auto;
-    display: block;
-    object-fit: contain;
-    background: #f7f7f7;
-}
+        .form-control {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            font-size: 1rem;
+            background: var(--glass);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
 
-/* Prompt content: flex column, meta sticks to bottom */
-.prompt-content {
-    display: flex;
-    flex-direction: column;
-    padding: 1.5rem;
-    height: 100%;
-    min-height: 0;
-    position: relative;
-}
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+            background: rgba(139, 92, 246, 0.05);
+        }
 
-/* Copy button styling */
-.copy-button {
-    background: var(--accent);
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    padding: 0.5rem 1.2rem;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    align-self: flex-end;
-    margin-bottom: 0.5rem;
-    transition: background 0.2s, box-shadow 0.2s;
-    box-shadow: 0 2px 8px rgba(74, 105, 189, 0.08);
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-.copy-button:hover, .copy-button:focus {
-    background: #3a58a8;
-    outline: none;
-}
+        .submit-button {
+            width: 100%;
+            background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+            color: white;
+            border: none;
+            border-radius: 16px;
+            padding: 1.2rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 1rem;
+        }
 
-/* Prompt text with slider (scrollbar) and max height for mobile-first */
-.prompt-text {
-    color: var(--text-secondary);
-    font-size: 1rem;
-    line-height: 1.6;
-    flex: 1 1 auto;
-    min-height: 0;
-    max-height: 6rem;
-    overflow-y: auto;
-    margin-bottom: 1rem;
-    padding-right: 0.5rem;
-    scrollbar-width: thin;
-    scrollbar-color: var(--accent) #eee;
-    background: transparent;
-    border-radius: 6px;
-    transition: max-height 0.3s;
-}
+        .submit-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(139, 92, 246, 0.4);
+        }
 
-/* Custom scrollbar for Webkit browsers */
-.prompt-text::-webkit-scrollbar {
-    width: 6px;
-}
-.prompt-text::-webkit-scrollbar-thumb {
-    background: var(--accent);
-    border-radius: 4px;
-}
-.prompt-text::-webkit-scrollbar-track {
-    background: #eee;
-    border-radius: 4px;
-}
+        .notification {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem 2rem;
+            color: var(--text-primary);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            transform: translateX(400px);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            max-width: 350px;
+        }
 
-/* Responsive: increase prompt-text max-height on larger screens */
-@media (min-width: 600px) {
-    .prompt-text {
-        max-height: 8rem;
-    }
-}
-@media (min-width: 900px) {
-    .prompt-text {
-        max-height: 10rem;
-    }
-}
+        .notification.show {
+            transform: translateX(0);
+        }
 
-/* Responsive columns for smaller screens */
-@media (max-width: 900px) {
-    .gallery {
-        column-count: 2;
-    }
-}
-@media (max-width: 600px) {
-    .gallery {
-        column-count: 1;
-    }
-}
+        .notification.success {
+            border-left: 4px solid var(--success);
+        }
 
         footer {
-            background-color: var(--bg-secondary);
-            padding: 3rem 2rem;
+            background: var(--bg-secondary);
+            padding: 4rem 2rem 2rem;
             text-align: center;
+            border-top: 1px solid var(--border-color);
+            margin-top: 6rem;
         }
 
         .footer-content {
@@ -273,232 +596,732 @@
         .footer-links {
             display: flex;
             justify-content: center;
-            gap: 2rem;
+            gap: 3rem;
             margin: 2rem 0;
+            flex-wrap: wrap;
         }
 
         .footer-links a {
             color: var(--text-secondary);
             text-decoration: none;
-            transition: color 0.3s;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
         }
 
         .footer-links a:hover {
             color: var(--accent);
+            background: rgba(139, 92, 246, 0.1);
+            transform: translateY(-2px);
         }
 
-        .copyright {
-            color: var(--text-secondary);
-            margin-top: 2rem;
-        }
-
+        /* Mobile optimizations */
         @media (max-width: 768px) {
-            .header-container {
-                flex-direction: column;
-                gap: 1rem;
-            }
-            
             .hero h1 {
-                font-size: 2.5rem;
+                font-size: 3rem;
             }
             
             .gallery {
                 grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .container {
+                padding: 3rem 1rem;
             }
             
             .submit-section {
                 padding: 2rem;
+                margin: 0 1rem;
             }
             
-            .copy-button {
-                position: relative;
-                top: 0;
-                right: 0;
-                margin-bottom: 1rem;
+            .notification {
+                top: 1rem;
+                right: 1rem;
+                left: 1rem;
+                max-width: none;
+                transform: translateY(-200px);
+            }
+            
+            .notification.show {
+                transform: translateY(0);
             }
         }
 
-        /* Submission form section */
-.submit-section {
-    background: var(--bg-secondary);
-    border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.04);
-    padding: 2rem;
-    max-width: 500px;
-    margin: 0 auto 3rem auto;
-}
+        /* Scroll animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.6s ease;
+        }
 
-.form-group {
-    margin-bottom: 1.5rem;
-    display: flex;
-    flex-direction: column;
-}
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+          * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-.form-group label {
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-    color: var(--text-primary);
-}
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
 
-.form-control {
-    padding: 0.75rem 1rem;
-    border: 1px solid var(--border-color);
-    border-radius: 6px;
-    font-size: 1rem;
-    background: var(--card-bg);
-    color: var(--text-primary);
-    transition: border 0.2s;
-}
+        /* Animated background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: radial-gradient(ellipse at center, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+                        radial-gradient(ellipse at 80% 20%, rgba(6, 255, 165, 0.1) 0%, transparent 50%),
+                        radial-gradient(ellipse at 20% 80%, rgba(255, 107, 107, 0.1) 0%, transparent 50%);
+            animation: bgShift 20s ease-in-out infinite;
+        }
 
-.form-control:focus {
-    border-color: var(--accent);
-    outline: none;
-}
+        @keyframes bgShift {
+            0%, 100% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.1); }
+        }
 
-.submit-button {
-    background: var(--accent);
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    padding: 0.75rem 2rem;
-    font-size: 1.1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s, box-shadow 0.2s;
-    box-shadow: 0 2px 8px rgba(74, 105, 189, 0.08);
-    margin-top: 1rem;
-}
+        /* Floating particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
 
-.submit-button:hover, .submit-button:focus {
-    background: #3a58a8;
-    outline: none;
-}
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--accent);
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: float 15s infinite linear;
+        }
 
-.notification {
-    display: none;
-    position: fixed;
-    top: 1.5rem;
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--card-bg);
-    color: var(--text-primary);
-    border-radius: 8px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-    padding: 1rem 2rem;
-    z-index: 9999;
-    font-size: 1.1rem;
-    align-items: center;
-    gap: 0.75rem;
-}
-.notification.show {
-    display: flex;
-}
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
 
-/* User avatar as a small circle */
-.user-avatar {
-    width: 2.2rem;
-    height: 2.2rem;
-    background: var(--accent);
-    color: #fff;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-size: 1.1rem;
-    margin-right: 0.7rem;
-    box-shadow: 0 2px 8px rgba(74, 105, 189, 0.10);
-    border: 2px solid #fff;
-}
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            background: rgba(10, 10, 10, 0.7);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
-/* User info and meta layout */
-.prompt-meta {
-    margin-top: 0;
-    padding-top: 1rem;
-    border-top: 1px solid var(--border-color);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: relative;
-}
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
 
-/* Social links: stick to bottom right of card */
-.social-links {
-    display: flex;
-    gap: 0.7rem;
-    position: absolute;
-    right: 1.5rem;
-    bottom: 1rem;
-}
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -2px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
 
-.social-links a {
-    color: var(--accent);
-    font-size: 1.2rem;
-    transition: color 0.2s;
-    background: #f3f6fd;
-    border-radius: 50%;
-    width: 2rem;
-    height: 2rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+        .logo:hover {
+            transform: scale(1.05);
+            filter: drop-shadow(0 0 20px rgba(139, 92, 246, 0.5));
+        }
 
-.social-links a:hover {
-    color: #fff;
-    background: var(--accent);
-}
+        .nav-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
 
-@media (max-width: 600px) {
-    .submit-section {
-        padding: 1rem;
-        max-width: 100%;
-    }
-    .form-control {
-        font-size: 0.98rem;
-        padding: 0.65rem 0.8rem;
-    }
-    .submit-button {
-        width: 100%;
-        padding: 0.75rem 0;
-    }
-}
+        .theme-toggle {
+            background: var(--glass);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 0.8rem;
+            border-radius: 50%;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+        }
+
+        .theme-toggle:hover {
+            background: var(--accent);
+            transform: rotate(180deg) scale(1.1);
+            box-shadow: 0 0 30px rgba(139, 92, 246, 0.5);
+        }
+
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.3) 0%, transparent 70%);
+            transform: translate(-50%, -50%);
+            animation: pulse 4s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; }
+            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.1; }
+        }
+
+        .hero h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(3rem, 8vw, 8rem);
+            font-weight: 800;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 50%, var(--accent-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.1;
+            letter-spacing: -3px;
+            animation: titleGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes titleGlow {
+            0%, 100% { filter: drop-shadow(0 0 10px rgba(139, 92, 246, 0.3)); }
+            50% { filter: drop-shadow(0 0 30px rgba(139, 92, 246, 0.6)); }
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            max-width: 700px;
+            margin: 0 auto 3rem;
+            color: var(--text-secondary);
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 0.5s forwards;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-secondary) 100%);
+            color: white;
+            border: none;
+            padding: 1.5rem 3rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 10px 40px rgba(139, 92, 246, 0.3);
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 0.8s forwards;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.7s;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 20px 60px rgba(139, 92, 246, 0.5);
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 6rem 2rem;
+            position: relative;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+            position: relative;
+        }
+
+        .section-title::before {
+            content: '';
+            position: absolute;
+            top: -2rem;
+            left: 50%;
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-secondary));
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        .section-title h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            padding: 2rem 0;
+        }
+
+        .prompt-card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .prompt-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .prompt-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(6, 255, 165, 0.1));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+
+        .prompt-card:hover {
+            transform: translateY(-10px) rotateX(5deg);
+            box-shadow: 0 25px 80px rgba(139, 92, 246, 0.3);
+            border-color: rgba(139, 92, 246, 0.5);
+        }
+
+        .prompt-card:hover::before {
+            opacity: 1;
+        }
+
+        .prompt-image {
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 4/5;
+        }
+
+        .prompt-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+            filter: brightness(0.9);
+        }
+
+        .prompt-card:hover .prompt-image img {
+            transform: scale(1.1);
+            filter: brightness(1.1);
+        }
+
+        .prompt-image::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            pointer-events: none;
+        }
+
+        .prompt-content {
+            padding: 2rem;
+            position: relative;
+        }
+
+        .copy-button {
+            position: absolute;
+            top: -25px;
+            right: 2rem;
+            background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 0.8rem 1.5rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(139, 92, 246, 0.4);
+            z-index: 10;
+        }
+
+        .copy-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(139, 92, 246, 0.6);
+        }
+
+        .prompt-content h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .prompt-text {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.7;
+            max-height: 120px;
+            overflow-y: auto;
+            margin-bottom: 1.5rem;
+            padding-right: 0.5rem;
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent) transparent;
+        }
+
+        .prompt-text::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .prompt-text::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 2px;
+        }
+
+        .prompt-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .social-links a {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            padding: 0.5rem;
+            border-radius: 50%;
+            background: var(--glass);
+        }
+
+        .social-links a:hover {
+            color: var(--accent);
+            background: rgba(139, 92, 246, 0.2);
+            transform: translateY(-3px);
+        }
+
+        .submit-section {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border-radius: 32px;
+            padding: 3rem;
+            max-width: 600px;
+            margin: 0 auto;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            font-size: 1rem;
+            background: var(--glass);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+            background: rgba(139, 92, 246, 0.05);
+        }
+
+        .submit-button {
+            width: 100%;
+            background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+            color: white;
+            border: none;
+            border-radius: 16px;
+            padding: 1.2rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 1rem;
+        }
+
+        .submit-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(139, 92, 246, 0.4);
+        }
+
+        .notification {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem 2rem;
+            color: var(--text-primary);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            transform: translateX(400px);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            max-width: 350px;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            border-left: 4px solid var(--success);
+        }
+
+        footer {
+            background: var(--bg-secondary);
+            padding: 4rem 2rem 2rem;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            margin-top: 6rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+            background: rgba(139, 92, 246, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Mobile optimizations */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 3rem;
+            }
+            
+            .gallery {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .container {
+                padding: 3rem 1rem;
+            }
+            
+            .submit-section {
+                padding: 2rem;
+                margin: 0 1rem;
+            }
+            
+            .notification {
+                top: 1rem;
+                right: 1rem;
+                left: 1rem;
+                max-width: none;
+                transform: translateY(-200px);
+            }
+            
+            .notification.show {
+                transform: translateY(0);
+            }
+        }
+
+        /* Scroll animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.6s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
     </style>
 </head>
 <body>
+    <!-- Animated background -->
+    <div class="bg-animation"></div>
+    
+    <!-- Floating particles -->
+    <div class="particles" id="particles"></div>
+    
     <header>
-        <div class="logo">Prompt<span>Gallery</span></div>
-        <button class="theme-toggle" id="theme-toggle">
-            <i class="fas fa-moon"></i>
-        </button>
+        <div class="header-container">
+            <a href="#" class="logo">PromptGalaxy</a>
+            <div class="nav-controls">
+                <button class="theme-toggle" id="theme-toggle">
+                    <i class="fas fa-sun"></i>
+                </button>
+            </div>
+        </div>
     </header>
     
     <section class="hero">
-        <h1>Discover & Share Creative Prompts</h1>
-        <p>A curated collection of AI art prompts to inspire your next creation. Submit your own and share with the community.</p>
-        <button class="cta-button" onclick="scrollToSection('submit')">Submit Your Prompt</button>
+        <h1>AI Prompts<br>Reimagined</h1>
+        <p>Discover the most insane AI art prompts that push the boundaries of creativity. Join thousands of artists creating the impossible.</p>
+        <button class="cta-button" onclick="scrollToSection('gallery')">
+            <i class="fas fa-rocket"></i> Explore Galaxy
+        </button>
     </section>
     
     <section id="gallery" class="container">
-        <div class="section-title">
-            <h2>Try these Prompts</h2>
-            <p>Explore our collection of community-generated prompts</p>
+        <div class="section-title reveal">
+            <h2>Legendary Prompts</h2>
+            <p>Each prompt is a gateway to unlimited creative possibilities</p>
         </div>
         
         <div class="gallery">
             <!-- Prompt 1 -->
             <div class="prompt-card">
                 <div class="prompt-image">
-                    <!-- <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #8a2387, #e94057, #f27121); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">AI Generated Portrait</div> -->
-                    <img src="{{ url_for('static', filename='images/1.jpg') }}" alt="">
+                      <img src="{{ url_for('static', filename='images/1.jpg') }}" alt="">" alt="Glamorous Fashion Portrait">
                 </div>
                 <div class="prompt-content">
                     <button class="copy-button" onclick="copyPrompt(this)">
-                        <i class="fas fa-copy"></i> Copy
+                        <i class="fas fa-copy"></i> Copy Magic
                     </button>
                     <h3>Glamorous Fashion Portrait</h3>
                     <div class="prompt-text">
-                        Create a high resolution HD 4k picture of a glamorous young woman poses in a fashion photoshoot against a smooth studio backdrop with a strong circular spotlight glow. She wears a fitted, off-shoulder deep red bodycon dress that highlights her figure. Her voluminous wavy hair flows outward, captured in motion, giving a dramatic and dynamic effect. She accessorizes with large gold hoop earrings, keeping the look bold yet minimal. Her makeup is elegant with sharp definition, and her expression is confident, slightly fierce, and alluring. The lighting is high-contrast, emphasizing her facial features and outfit while casting soft shadows, creating a stylish, magazine-editorial vibe. Don't change my face keep it as real as shown in the picture.
+                        Create a high resolution HD 4k picture of a glamorous young woman poses in a fashion photoshoot against a smooth studio backdrop with a strong circular spotlight glow. She wears a fitted, off-shoulder deep red bodycon dress that highlights her figure. Her voluminous wavy hair flows outward, captured in motion, giving a dramatic and dynamic effect. She accessorizes with large gold hoop earrings, keeping the look bold yet minimal. Her makeup is elegant with sharp definition, and her expression is confident, slightly fierce, and alluring. The lighting is high-contrast, emphasizing her facial features and outfit while casting soft shadows, creating a stylish, magazine-editorial vibe.
                     </div>
                     <div class="prompt-meta">
                         <div class="user-info">
@@ -516,15 +1339,15 @@
             <!-- Prompt 2 -->
             <div class="prompt-card">
                 <div class="prompt-image">
-                    <img src="{{ url_for('static', filename='images/2.jpg') }}" alt="">
+                    <img src="{{ url_for('static', filename='images/2.jpg') }}" alt="Cinematic Golden Hour">
                 </div>
                 <div class="prompt-content">
                     <button class="copy-button" onclick="copyPrompt(this)">
-                        <i class="fas fa-copy"></i> Copy
+                        <i class="fas fa-copy"></i> Copy Magic
                     </button>
                     <h3>Cinematic Golden Hour</h3>
                     <div class="prompt-text">
-                        Ultra-realistic cinematic portrait of this person in the image standing against a dark minimal background with a soft golden sunlight beam casting dramatic shadows. He is wearing a crisp, elegant black tshirt and black suit (blazer and wide-leg trousers) with one hand casually in his pocket and the other holding a bouquet of red roses close to his chest. His expression is serene and confident, eyes closed, basking in the warm sunlight. The composition highlights the play of light and shadow, with a strong shadow silhouette falling on the wall behind him. The mood is romantic, artistic, and editorial-capturing both sophistication and vulnerability. Shot in high resolution, with cinematic tones, sharp details, and soft contrast.
+                        Ultra-realistic cinematic portrait of this person standing against a dark minimal background with a soft golden sunlight beam casting dramatic shadows. He is wearing a crisp, elegant black tshirt and black suit with one hand casually in his pocket and the other holding a bouquet of red roses close to his chest. His expression is serene and confident, eyes closed, basking in the warm sunlight. The composition highlights the play of light and shadow, with a strong shadow silhouette falling on the wall behind him. The mood is romantic, artistic, and editorial-capturing both sophistication and vulnerability.
                     </div>
                     <div class="prompt-meta">
                         <div class="user-info">
@@ -542,15 +1365,15 @@
             <!-- Prompt 3 -->
             <div class="prompt-card">
                 <div class="prompt-image">
-                    <img src="{{ url_for('static', filename='images/3.jpg') }}" alt="">
+                    <img src="{{ url_for('static', filename='images/3.jpg') }}" alt="Mirror Reflection">
                 </div>
                 <div class="prompt-content">
                     <button class="copy-button" onclick="copyPrompt(this)">
-                        <i class="fas fa-copy"></i> Copy
+                        <i class="fas fa-copy"></i> Copy Magic
                     </button>
                     <h3>Mirror Reflection</h3>
                     <div class="prompt-text">
-                        Ultra realistic, high resolution cinematic portrait of a person standing in front of a mirror with sleek vertical white light strips in the background. The person has a medium-light skin tone, short dark brown hair styled neatly, Face with the face from the uploaded image, keeping the facial features exactly the same. He is wearing a white button-down shirt with the sleeves rolled up and slightly unbuttoned at the top, revealing a subtle hint of his chest. A black tie is loosely draped around his neck, creating a casual yet sophisticated vibe. He is wearing black dress pants with a black belt, and his hands are casually placed in his pockets. His facial expression is intense and contemplative, with his eyes looking directly into the camera, conveying quiet confidence. The lighting is soft and diffused, highlighting the texture of his skin and fabric, while the reflections in the mirror add depth to the composition.
+                        Ultra realistic, high resolution cinematic portrait of a person standing in front of a mirror with sleek vertical white light strips in the background. He is wearing a white button-down shirt with the sleeves rolled up and slightly unbuttoned at the top, revealing a subtle hint of his chest. A black tie is loosely draped around his neck, creating a casual yet sophisticated vibe. He is wearing black dress pants with a black belt, and his hands are casually placed in his pockets. His facial expression is intense and contemplative, with his eyes looking directly into the camera, conveying quiet confidence.
                     </div>
                     <div class="prompt-meta">
                         <div class="user-info">
@@ -571,7 +1394,7 @@
                 </div>
                 <div class="prompt-content">
                     <button class="copy-button" onclick="copyPrompt(this)">
-                        <i class="fas fa-copy"></i> Copy
+                        <i class="fas fa-copy"></i> Copy Magic
                     </button>
                     <h3>Cozy Reading Session</h3>
                     <div class="prompt-text">
@@ -592,16 +1415,15 @@
             <!-- Prompt 5 -->
             <div class="prompt-card">
                 <div class="prompt-image">
-                    <!-- <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #c0392b, #e74c3c); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">Couple Portrait</div> -->
-                    <img src="{{ url_for('static', filename='images/5.jpg') }}" alt="Couple Portrait" style="width:100%;height:100%">
+                    <img src="{{ url_for('static', filename='images/5.jpg') }}" alt="Couple Portrait">
                 </div>
                 <div class="prompt-content">
                     <button class="copy-button" onclick="copyPrompt(this)">
-                        <i class="fas fa-copy"></i> Copy
+                        <i class="fas fa-copy"></i> Copy Magic
                     </button>
                     <h3>Golden Hour Couple</h3>
                     <div class="prompt-text">
-                        Warm-toned cinematic outdoor portrait of a 21-year-old young man and young woman standing close together beside a white pillar. The woman leans casually against the pillar, head slightly tilted back, looking away with a calm and dreamy expression. She has long black hair styled in two braids, wearing a loose dark-blue embroidered jacket with a black belt at the waist and a light gray pleated skirt. The man stands close beside her, leaning his right arm on the pillar above her head, gazing at her with a soft, affectionate expression. He has wavy dark hair, wearing a casual red plaid button-up shirt with rolled-up sleeves and light brown trousers, one hand in his pocket. Soft natural daylight with golden highlights, slightly blurred green trees in the background, shallow depth of field, warm film-like tones, medium shot from waist up, no extra sharpness, gentle and natural look.
+                        Warm-toned cinematic outdoor portrait of a 21-year-old young man and young woman standing close together beside a white pillar. The woman leans casually against the pillar, head slightly tilted back, looking away with a calm and dreamy expression. She has long black hair styled in two braids, wearing a loose dark-blue embroidered jacket with a black belt at the waist and a light gray pleated skirt. The man stands close beside her, leaning his right arm on the pillar above her head, gazing at her with a soft, affectionate expression.
                     </div>
                     <div class="prompt-meta">
                         <div class="user-info">
@@ -618,16 +1440,15 @@
             <!-- Prompt 6 -->
             <div class="prompt-card">
                 <div class="prompt-image">
-                    <!-- <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #000000, #434343); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">Fashion Portrait</div> -->
-                    <img src="{{ url_for('static', filename='images/6.jpg') }}" alt="">
+                    <img src="{{ url_for('static', filename='images/6.jpg') }}" alt="Fashion Portrait">
                 </div>
                 <div class="prompt-content">
                     <button class="copy-button" onclick="copyPrompt(this)">
-                        <i class="fas fa-copy"></i> Copy
+                        <i class="fas fa-copy"></i> Copy Magic
                     </button>
-                    <h3>Black & White Fashion</h3>
+                    <h3>Cyberpunk Fashion</h3>
                     <div class="prompt-text">
-                        Use 100% face above uploaded photo Black and white fashion portrait of a handsome young man in last 27s with black hair and black beard like uploaded photo.looking over his shoulder. He is wearing a stylish black leather jacket and modern rectangular red sunglasses. The background is a seamless, minimalist white studio backdrop with blue circle ring. The lighting is dramatic high-contrast studio lighting, creating sharp focus and highlighting the texture of the leather jacket and his features. Photorealistic, highly detailed, 8K, professional photography, shot on an 85mm lens, hyperrealistic, FHD.
+                        Black and white fashion portrait of a handsome young man with black hair and black beard. He's wearing a stylish black leather jacket and modern rectangular red sunglasses, looking over his shoulder. The background is a seamless, minimalist white studio backdrop with neon blue circle ring. The lighting is dramatic high-contrast studio lighting, creating sharp focus and highlighting the texture of the leather jacket. Photorealistic, highly detailed, 8K, professional photography, shot on an 85mm lens, hyperrealistic, FHD.
                     </div>
                     <div class="prompt-meta">
                         <div class="user-info">
@@ -640,19 +1461,19 @@
                     </div>
                 </div>
             </div>
-<!-- Prompt 7 -->
+
+            <!-- Prompt 7 -->
             <div class="prompt-card">
                 <div class="prompt-image">
-                    <!-- <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #8a2387, #e94057, #f27121); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">AI Generated Portrait</div> -->
-                    <img src="{{ url_for('static', filename='images/7.jpg') }}" alt="">
+                    <img src="{{ url_for('static', filename='images/7.jpg') }}" alt="Close-up Portrait">
                 </div>
                 <div class="prompt-content">
                     <button class="copy-button" onclick="copyPrompt(this)">
-                        <i class="fas fa-copy"></i> Copy
+                        <i class="fas fa-copy"></i> Copy Magic
                     </button>
-                    <h3>close-up Portrait</h3>
+                    <h3>Neon Water Portrait</h3>
                     <div class="prompt-text">
-Generate a hyper-realistic close-up portrait of the young woman in the attached image, with only the left half of her face visible and partially submerged in water. The scene is dramatically lit with soft, ambient blue and pink neon lighting, creating colorful reflections on her wet skin and damp hair. Water droplets and small bubbles cling to her face, enhancing the cinematic and moody atmosphere. Preserve the exact facial features and expression from the reference image. Highlight realistic skin texture, fine details, and the intense focus in her eyes.
+                        Generate a hyper-realistic close-up portrait of the young woman in the attached image, with only the left half of her face visible and partially submerged in water. The scene is dramatically lit with soft, ambient blue and pink neon lighting, creating colorful reflections on her wet skin and damp hair. Water droplets and small bubbles cling to her face, enhancing the cinematic and moody atmosphere. Preserve the exact facial features and expression from the reference image. Highlight realistic skin texture, fine details, and the intense focus in her eyes.
                     </div>
                     <div class="prompt-meta">
                         <div class="user-info">
@@ -666,20 +1487,20 @@ Generate a hyper-realistic close-up portrait of the young woman in the attached 
                     </div>
                 </div>
             </div>
+
+ 
             <!-- Prompt 8 -->
             <div class="prompt-card">
                 <div class="prompt-image">
-                    <!-- <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #8a2387, #e94057, #f27121); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">AI Generated Portrait</div> -->
-                    <img src="{{ url_for('static', filename='images/8.jpg') }}" alt="">
+                    <img src="{{ url_for('static', filename='images/8.jpg') }}" alt="Polaroid Couple">
                 </div>
                 <div class="prompt-content">
                     <button class="copy-button" onclick="copyPrompt(this)">
-                        <i class="fas fa-copy"></i> Copy
+                        <i class="fas fa-copy"></i> Copy Magic
                     </button>
-                    <h3>Polaroid-style couple photo</h3>
+                    <h3>Vintage Polaroid Love</h3>
                     <div class="prompt-text">
-                        A Polaroid-style photograph of a boy and a girl posing cutely together. The photo should have a natural, ordinary feel, with a slight blur and consistent lighting, as if taken with a flash in a dim room. The background should be white curtains.
-Keep the faces unchanged, but capture a cozy, candid vibe between the two, like a sweet moment frozen on film.
+                        A Polaroid-style photograph of a boy and a girl posing cutely together. The photo should have a natural, ordinary feel, with a slight blur and consistent lighting, as if taken with a flash in a dim room. The background should be white curtains. Keep the faces unchanged, but capture a cozy, candid vibe between the two, like a sweet moment frozen on film.
                     </div>
                     <div class="prompt-meta">
                         <div class="user-info">
@@ -693,44 +1514,46 @@ Keep the faces unchanged, but capture a cozy, candid vibe between the two, like 
                     </div>
                 </div>
             </div>
+            
             <!-- Prompt 9 -->
             <div class="prompt-card">
                 <div class="prompt-image">
-                    <!-- <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #8a2387, #e94057, #f27121); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">AI Generated Portrait</div> -->
-                    <img src="{{ url_for('static', filename='images/9.jpg') }}" alt="">
+                    <img src="{{ url_for('static', filename='images/9.jpg') }}" alt="Motion Blur Portrait">
                 </div>
                 <div class="prompt-content">
                     <button class="copy-button" onclick="copyPrompt(this)">
-                        <i class="fas fa-copy"></i> Copy
+                        <i class="fas fa-copy"></i> Copy Magic
                     </button>
-                    <h3>Slow shutter portrait</h3>
+                    <h3>Artistic Motion Blur</h3>
                     <div class="prompt-text">
-Convert this image into a Fine black and white photography of a handsome young man (take reference face as uploaded image face)with dark, his head tilted back in a moment of intense creative thought or ecstasy. He is wearing an open, loose white collared shirt, standing in a dimly lit study filled with stacks of books and papers. The image is captured with a slow shutter speed, creating dramatic horizontal motion blur that streaks the background and the edges of his form.                    </div>
+                        Convert this image into a Fine black and white photography of a handsome young man with dark hair, his head tilted back in a moment of intense creative thought or ecstasy. He is wearing an open, loose white collared shirt, standing in a dimly lit study filled with stacks of books and papers. The image is captured with a slow shutter speed, creating dramatic horizontal motion blur that streaks the background and the edges of his form.
+                    </div>
                     <div class="prompt-meta">
                         <div class="user-info">
                             <div class="user-avatar">PP</div>
                             <span>Pranav Patil</span>
                         </div>
                         <div class="social-links">
-<a href="https://www.instagram.com/iterate.pranav" target="_blank"><i class="fab fa-instagram"></i></a>
+                            <a href="https://www.instagram.com/iterate.pranav" target="_blank"><i class="fab fa-instagram"></i></a>
                             <a href="https://www.twitter.com/everydaypranav" target="_blank"><i class="fab fa-twitter"></i></a>
                         </div>
                     </div>
                 </div>
             </div>
- <!-- Prompt 10 -->
+            
+            <!-- Prompt 10 -->
             <div class="prompt-card">
                 <div class="prompt-image">
-                    <!-- <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #8a2387, #e94057, #f27121); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">AI Generated Portrait</div> -->
-                    <img src="{{ url_for('static', filename='images/10.jpg') }}" alt="">
+                    <img src="{{ url_for('static', filename='images/10.jpg') }}" alt="Royal Portrait">
                 </div>
                 <div class="prompt-content">
                     <button class="copy-button" onclick="copyPrompt(this)">
-                        <i class="fas fa-copy"></i> Copy
+                        <i class="fas fa-copy"></i> Copy Magic
                     </button>
-                    <h3>Royal vintage Portrait</h3>
+                    <h3>Royal Maharani Portrait</h3>
                     <div class="prompt-text">
-A regal vintage-style portrait of a young woman with my real face and natural features, styled as a Maharani from the royal Rajasthan era. She is wearing a richly embroidered heavy lehenga with a half-sleeve blouse and an ornate dupatta draped over her head, with open hair. The outfit is detailed with intricate embroidery, paired with traditional jewelry—choker, long rani haar, maang tikka, small red bindi, and delicate earrings, and some bangles. The backdrop is a luxurious indoor setting with a large arched window and rich, dark wood furniture. The lighting is soft and golden, creating a warm and royal atmosphere. The pose is elegant and confident. And smile, make it beautiful and freely smile                    </div>
+                        A regal vintage-style portrait of a young woman with natural features, styled as a Maharani from the royal Rajasthan era. She is wearing a richly embroidered heavy lehenga with a half-sleeve blouse and an ornate dupatta draped over her head, with open hair. The outfit is detailed with intricate embroidery, paired with traditional jewelry—choker, long rani haar, maang tikka, small red bindi, and delicate earrings, and some bangles. The backdrop is a luxurious indoor setting with a large arched window and rich, dark wood furniture. The lighting is soft and golden, creating a warm and royal atmosphere. The pose is elegant and confident with a beautiful, free smile.
+                    </div>
                     <div class="prompt-meta">
                         <div class="user-info">
                             <div class="user-avatar">JD</div>
@@ -743,19 +1566,19 @@ A regal vintage-style portrait of a young woman with my real face and natural fe
                     </div>
                 </div>
             </div>
+            
             <!-- Prompt 11 -->
             <div class="prompt-card">
                 <div class="prompt-image">
-                    <!-- <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #8a2387, #e94057, #f27121); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">AI Generated Portrait</div> -->
-                    <img src="{{ url_for('static', filename='images/11.jpg') }}" alt="">
+                    <img src="{{ url_for('static', filename='images/11.jpg') }}" alt="Traditional Indian">
                 </div>
                 <div class="prompt-content">
                     <button class="copy-button" onclick="copyPrompt(this)">
-                        <i class="fas fa-copy"></i> Copy
+                        <i class="fas fa-copy"></i> Copy Magic
                     </button>
-                    <h3>Indian traditional photo</h3>
+                    <h3>Golden Hour Traditional</h3>
                     <div class="prompt-text">
-                    Transform this image into a cinematic golden-hour portrait with dramatic triangular shadows on a plain wall. Warm, soft sunlight with deep contrast for a moody, editorial look. Dress him in an elegant Indian traditional outfit — a perfectly tailored kurta or kurta set in deep red or maroon with soft, flowing fabric that catches light. Hair slightly tousled and natural for a relaxed, confident vibe. Add subtle film grain, warm tones, and a vintage cinematic aesthetic
+                        Transform this image into a cinematic golden-hour portrait with dramatic triangular shadows on a plain wall. Warm, soft sunlight with deep contrast for a moody, editorial look. Dress him in an elegant Indian traditional outfit — a perfectly tailored kurta or kurta set in deep red or maroon with soft, flowing fabric that catches light. Hair slightly tousled and natural for a relaxed, confident vibe. Add subtle film grain, warm tones, and a vintage cinematic aesthetic.
                     </div>
                     <div class="prompt-meta">
                         <div class="user-info">
@@ -769,19 +1592,20 @@ A regal vintage-style portrait of a young woman with my real face and natural fe
                     </div>
                 </div>
             </div>
+            
             <!-- Prompt 12 -->
             <div class="prompt-card">
                 <div class="prompt-image">
-                    <!-- <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #8a2387, #e94057, #f27121); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">AI Generated Portrait</div> -->
-                    <img src="{{ url_for('static', filename='images/12.jpg') }}" alt="">
+                    <img src="{{ url_for('static', filename='images/12.jpg') }}" alt="Traditional Dhoti">
                 </div>
                 <div class="prompt-content">
                     <button class="copy-button" onclick="copyPrompt(this)">
-                        <i class="fas fa-copy"></i> Copy
+                        <i class="fas fa-copy"></i> Copy Magic
                     </button>
-                    <h3>Traditional white dhoti</h3>
+                    <h3>Royal Enfield Tradition</h3>
                     <div class="prompt-text">
-A young man standing in front of a modern house with a wooden door and a black Royal Enfield Bullet motorcycle. He is wearing a maroon shirt with sleeves rolled up, a traditional white dhoti (veshti/mundu) with golden border, and sunglasses. His curly hair is styled naturally. He is posing while holding the dhoti with both hands, standing confidently beside the motorcycle. Bright daylight, clear sharp details, cinematic look, same body structure, same dress, same background, same camera angle, same lighting, realistic high-quality photo.
+                        A young man standing in front of a modern house with a wooden door and a black Royal Enfield Bullet motorcycle. He is wearing a maroon shirt with sleeves rolled up, a traditional white dhoti (veshti/mundu) with golden border, and sunglasses. His curly hair is styled naturally. He is posing while holding the dhoti with both hands, standing confidently beside the motorcycle. Bright daylight, clear sharp details, cinematic look, same body structure, same dress, same background, same camera angle, same lighting, realistic high-quality photo.
+                    </div>
                     <div class="prompt-meta">
                         <div class="user-info">
                             <div class="user-avatar">TJ</div>
@@ -793,42 +1617,24 @@ A young man standing in front of a modern house with a wooden door and a black R
                     </div>
                 </div>
             </div>
-        </div>
-                    <!-- Prompt 13 -->
+            
+            <!-- Prompt 13 -->
             <div class="prompt-card">
                 <div class="prompt-image">
-                    <!-- <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #8a2387, #e94057, #f27121); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">AI Generated Portrait</div> -->
-                    <img src="{{ url_for('static', filename='images/13.jpg') }}" alt="">
+                    <img src="{{ url_for('static', filename='images/13.jpg') }}" alt="Cafe Lifestyle">
                 </div>
                 <div class="prompt-content">
                     <button class="copy-button" onclick="copyPrompt(this)">
-                        <i class="fas fa-copy"></i> Copy
+                        <i class="fas fa-copy"></i> Copy Magic
                     </button>
-                    <h3>Rich cafe look</h3>
+                    <h3>Luxury Cafe Lifestyle</h3>
                     <div class="prompt-text">
-Use the attached image of the person as the sole facial and hairstyle reference.
-
-Keep the exact same face, hairstyle, and overall appearance as in the reference image, maintaining a realistic and natural look.
-
-High-fashion lifestyle editorial portrait of a 20-year-old Indian man, elegant and sophisticated, sitting on a wooden chair in a modern cafe. He holds a white coffee cup in both hands in a refined gesture, exuding
-
-confidence and charm.
-
-Outfit: a structured white shirt with a white blazer casually thrown over the shoulders, combined with wide-cut jeans.
-
-Accessories: rectangular sunglasses with gold details, a luxury gold watch, and a bold statement ring.
-
-Skin: natural, youthful, glowing with soft highlight.
-
-Background: elegant cafe environment, blurred in the background to emphasize the subject.
-
-Lighting: soft, warm natural light illuminates the face and reflects off the gold accessories to create a luxurious glow.
-
-Pose: body slightly leaning forward.
+                        High-fashion lifestyle editorial portrait of a 20-year-old Indian man, elegant and sophisticated, sitting on a wooden chair in a modern cafe. He holds a white coffee cup in both hands in a refined gesture, exuding confidence and charm. Outfit: a structured white shirt with a white blazer casually thrown over the shoulders, combined with wide-cut jeans. Accessories: rectangular sunglasses with gold details, a luxury gold watch, and a bold statement ring. Skin: natural, youthful, glowing with soft highlight. Background: elegant cafe environment, blurred in the background to emphasize the subject. Lighting: soft, warm natural light illuminates the face and reflects off the gold accessories to create a luxurious glow.
+                    </div>
                     <div class="prompt-meta">
                         <div class="user-info">
                             <div class="user-avatar">AK</div>
-                            <span>Abhsishek Kumawat</span>
+                            <span>Abhishek Kumawat</span>
                         </div>
                         <div class="social-links">
                             <a href="https://www.instagram.com/abhishekkumavat443" target="_blank"><i class="fab fa-instagram"></i></a>
@@ -836,20 +1642,20 @@ Pose: body slightly leaning forward.
                     </div>
                 </div>
             </div>
-        </div>
-                            <!-- Prompt 13 -->
+            
+            <!-- Prompt 14 -->
             <div class="prompt-card">
                 <div class="prompt-image">
-                    <!-- <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #8a2387, #e94057, #f27121); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">AI Generated Portrait</div> -->
-                    <img src="{{ url_for('static', filename='images/14.jpg') }}" alt="">
+                    <img src="{{ url_for('static', filename='images/14.jpg') }}" alt="Cinematic Grassland">
                 </div>
                 <div class="prompt-content">
                     <button class="copy-button" onclick="copyPrompt(this)">
-                        <i class="fas fa-copy"></i> Copy
+                        <i class="fas fa-copy"></i> Copy Magic
                     </button>
-                    <h3>Cinematic pic in grassland</h3>
+                    <h3>Cinematic Freedom</h3>
                     <div class="prompt-text">
-A cinematic, moody photograph of a young man standing in a lush green field of tall grass under a cloudy, overcast sky. He is wearing a loose, dark button-up shirt and dark trousers. His posture is expressive and dramatic, leaning slightly backward with one arm outstretched and palm open, as if embracing the wind or the moment. His head is tilted back, eyes closed, and he is wearing large, over-ear silver headphones, giving a sense of calm and emotional release. The perspective is slightly low-angle, with blurred grass in the foreground creating a dreamy depth of field. The overall color grading is muted green and gray tones, with soft, diffused natural lighting for a serene, reflective, and slightly melancholic mood. The image feels cinematic, atmospheric, and intimate, capturing a quiet moment of solitude and freedom.
+                        A cinematic, moody photograph of a young man standing in a lush green field of tall grass under a cloudy, overcast sky. He is wearing a loose, dark button-up shirt and dark trousers. His posture is expressive and dramatic, leaning slightly backward with one arm outstretched and palm open, as if embracing the wind or the moment. His head is tilted back, eyes closed, and he is wearing large, over-ear silver headphones, giving a sense of calm and emotional release. The perspective is slightly low-angle, with blurred grass in the foreground creating a dreamy depth of field. The overall color grading is muted green and gray tones, with soft, diffused natural lighting for a serene, reflective, and slightly melancholic mood.
+                    </div>
                     <div class="prompt-meta">
                         <div class="user-info">
                             <div class="user-avatar">AC</div>
@@ -861,143 +1667,192 @@ A cinematic, moody photograph of a young man standing in a lush green field of t
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-    
-    <section id="submit" class="container">
-        <div class="section-title">
-            <h2>Submit Your Prompt</h2>
-            <p>Share your creative prompts with the community</p>
+
         </div>
         
-        <div class="submit-section">
+    </section>
+    
+
+    
+    
+     <section id="submit" class="container">
+        <div class="section-title reveal">
+            <h2>Submit Your Masterpiece</h2>
+            <p>Share your legendary prompts with the galaxy</p>
+        </div>
+        
+        <div class="submit-section reveal">
             <form action="/upload" method="post" enctype="multipart/form-data" id="prompt-form">
                 <div class="form-group">
-                    <label for="name">Your Name</label>
-                    <input type="text" id="name" name="name" class="form-control" placeholder="Enter your name" required>
+                    <label for="name">Creator Name</label>
+                    <input type="text" id="name" name="name" class="form-control" placeholder="Your artistic name" required>
                 </div>
                 
                 <div class="form-group">
-                    <label for="email">Your Email</label>
-                    <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email" required>
+                    <label for="email">Email Portal</label>
+                    <input type="email" id="email" name="email" class="form-control" placeholder="your@email.com" required>
                 </div>
                 
                 <div class="form-group">
                     <label for="prompt-title">Prompt Title</label>
-                    <input type="text" id="prompt-title" name="title" class="form-control" placeholder="Enter a descriptive title" required>
+                    <input type="text" id="prompt-title" name="title" class="form-control" placeholder="Give your prompt an epic name" required>
                 </div>
                 
                 <div class="form-group">
-                    <label for="prompt-text">Prompt Description</label>
-                    <textarea id="prompt-text" name="description" class="form-control" placeholder="Describe your prompt in detail..." required></textarea>
+                    <label for="prompt-text">The Magic Prompt</label>
+                    <textarea id="prompt-text" name="description" class="form-control" rows="6" placeholder="Describe your incredible AI art prompt in detail..." required></textarea>
                 </div>
                 
                 <div class="form-group">
-                    <label for="instagram">Instagram ID (optional)</label>
+                    <label for="instagram">Instagram Universe</label>
                     <input type="text" id="instagram" name="instagram" class="form-control" placeholder="@yourinstagram">
                 </div>
                 
                 <div class="form-group">
-                    <label for="twitter">Twitter ID (optional)</label>
+                    <label for="twitter">Twitter Dimension</label>
                     <input type="text" id="twitter" name="twitter" class="form-control" placeholder="@yourtwitter">
                 </div>
                 
                 <div class="form-group">
-                    <label for="image-upload">Upload Generated Image (optional)</label>
+                    <label for="image-upload">Upload Your Creation</label>
                     <input type="file" id="image-upload" name="image" class="form-control" accept="image/*">
                 </div>
                 
-                <button type="submit" class="submit-button">Submit Prompt</button>
+                <button type="submit" class="submit-button">
+                    <i class="fas fa-rocket"></i> Launch to Galaxy
+                </button>
             </form>
         </div>
     </section>
     
     <div id="notification" class="notification">
         <i class="fas fa-check-circle"></i>
-        <span>Your prompt has been submitted successfully!</span>
+        <span>Your legendary prompt has been launched into the galaxy!</span>
     </div>
     
     <footer>
         <div class="footer-content">
-            <div class="logo">Prompt<span>Gallery</span></div>
+            <div class="logo" style="font-size: 1.5rem; margin-bottom: 2rem;">PromptGalaxy</div>
             <div class="footer-links">
                 <a href="#gallery">Gallery</a>
                 <a href="#submit">Submit</a>
                 <a href="#about">About</a>
-                <a href="#">Privacy Policy</a>
-                <a href="#">Terms of Service</a>
+                <a href="#">Privacy</a>
+                <a href="#">Terms</a>
             </div>
-            <div class="copyright">
-                &copy; 2023 PromptGallery. All rights reserved.
+            <div class="copyright" style="margin-top: 2rem; color: var(--text-secondary);">
+                &copy; 2024 PromptGalaxy. Pushing the boundaries of AI creativity.
             </div>
         </div>
     </footer>
     
     <script>
-        // Theme toggle functionality
+        // Create floating particles
+        
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+        
+        // Theme toggle with smooth transitions
         const themeToggle = document.getElementById('theme-toggle');
         const themeIcon = themeToggle.querySelector('i');
         
         themeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('dark-mode');
-            if (document.body.classList.contains('dark-mode')) {
-                themeIcon.classList.remove('fa-moon');
-                themeIcon.classList.add('fa-sun');
-            } else {
+            document.body.classList.toggle('light-mode');
+            if (document.body.classList.contains('light-mode')) {
                 themeIcon.classList.remove('fa-sun');
                 themeIcon.classList.add('fa-moon');
+            } else {
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
             }
         });
         
-        // Scroll to section function
+        // Smooth scroll with easing
         function scrollToSection(sectionId) {
-            document.getElementById(sectionId).scrollIntoView({ 
-                behavior: 'smooth' 
+            const element = document.getElementById(sectionId);
+            const headerOffset = 100;
+            const elementPosition = element.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+            
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
             });
         }
         
-        // Copy prompt functionality
+        // Enhanced copy function with visual feedback
         function copyPrompt(button) {
             const promptText = button.parentElement.querySelector('.prompt-text').textContent;
             navigator.clipboard.writeText(promptText).then(() => {
-                showNotification('Prompt copied to clipboard!', 'success');
+                showNotification('Prompt copied to your creative arsenal!', 'success');
                 
-                // Change button text temporarily
-                const originalText = button.innerHTML;
+                // Visual feedback on button
+                const originalHTML = button.innerHTML;
                 button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                button.style.background = 'linear-gradient(135deg, #00ff88, #00cc6a)';
                 
                 setTimeout(() => {
-                    button.innerHTML = originalText;
+                    button.innerHTML = originalHTML;
+                    button.style.background = 'linear-gradient(135deg, var(--accent), var(--accent-secondary))';
                 }, 2000);
             }).catch(err => {
-                showNotification('Failed to copy prompt', 'error');
-                console.error('Failed to copy text: ', err);
+                showNotification('Copy failed - try selecting and copying manually', 'error');
             });
         }
         
-        // Show notification function
+        // Enhanced notification system
         function showNotification(message, type = 'info') {
             const notification = document.getElementById('notification');
+            const iconMap = {
+                success: 'check-circle',
+                error: 'exclamation-triangle',
+                info: 'info-circle'
+            };
+            
             notification.className = `notification ${type}`;
-            notification.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i> <span>${message}</span>`;
+            notification.innerHTML = `<i class="fas fa-${iconMap[type]}"></i> <span>${message}</span>`;
             notification.classList.add('show');
             
-            // Hide notification after 5 seconds
             setTimeout(() => {
                 notification.classList.remove('show');
             }, 5000);
         }
         
-        // REMOVE or COMMENT OUT this block:
-        // Form submission handling
-        // document.getElementById('prompt-form').addEventListener('submit', function(e) {
-        //     e.preventDefault();
-        //     // ...existing code...
-        //     showNotification('Your prompt has been submitted for review! It will be displayed once approved.', 'success');
-        //     this.reset();
-        // });
-
-        // Simple animation on scroll
+        // Form submission with animation
+        document.getElementById('prompt-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Animate submit button
+            const submitBtn = this.querySelector('.submit-button');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Launching...';
+            submitBtn.disabled = true;
+            
+            setTimeout(() => {
+                showNotification('Your legendary prompt has been launched into the galaxy!', 'success');
+                submitBtn.innerHTML = '<i class="fas fa-check"></i> Launched!';
+                
+                setTimeout(() => {
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                    this.submit()
+                    this.reset();
+                }, 2000);
+            }, 1500);
+        });
+        
+        // Intersection Observer for scroll animations
         const observerOptions = {
             root: null,
             rootMargin: '0px',
@@ -1005,21 +1860,100 @@ A cinematic, moody photograph of a young man standing in a lush green field of t
         };
         
         const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
+            entries.forEach((entry, index) => {
                 if (entry.isIntersecting) {
-                    entry.target.style.opacity = 1;
-                    entry.target.style.transform = 'translateY(0)';
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, index * 100); // Stagger animations
                 }
             });
         }, observerOptions);
         
-        // Observe gallery items
-        document.querySelectorAll('.prompt-card').forEach(card => {
-            card.style.opacity = 0;
-            card.style.transform = 'translateY(20px)';
-            card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-            observer.observe(card);
+        // Observe elements for animation
+        document.querySelectorAll('.prompt-card, .reveal').forEach(el => {
+            observer.observe(el);
         });
+        
+        // Header scroll effect
+        let lastScrollY = window.scrollY;
+        const header = document.querySelector('header');
+        
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > lastScrollY && window.scrollY > 100) {
+                header.style.transform = 'translateY(-100%)';
+            } else {
+                header.style.transform = 'translateY(0)';
+            }
+            lastScrollY = window.scrollY;
+            
+            // Add glass effect on scroll
+            if (window.scrollY > 50) {
+                header.style.background = 'rgba(10, 10, 10, 0.9)';
+                header.style.backdropFilter = 'blur(25px)';
+            } else {
+                header.style.background = 'rgba(10, 10, 10, 0.7)';
+                header.style.backdropFilter = 'blur(20px)';
+            }
+        });
+        
+        // Mouse parallax effect for cards
+        document.querySelectorAll('.prompt-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = (y - centerY) / 10;
+                const rotateY = (centerX - x) / 10;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(10px)`;
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px)';
+            });
+        });
+        
+        // Initialize particles on load
+        window.addEventListener('load', () => {
+            createParticles();
+            
+            // Animate cards on load
+            setTimeout(() => {
+                document.querySelectorAll('.prompt-card').forEach((card, index) => {
+                    setTimeout(() => {
+                        card.classList.add('visible');
+                    }, index * 150);
+                });
+            }, 500);
+        });
+        
+        // Add dynamic cursor effect
+        document.addEventListener('mousemove', (e) => {
+            const cursor = document.querySelector('.cursor') || (() => {
+                const c = document.createElement('div');
+                c.className = 'cursor';
+                c.style.cssText = `
+                    position: fixed;
+                    width: 20px;
+                    height: 20px;
+                    background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+                    border-radius: 50%;
+                    pointer-events: none;
+                    mix-blend-mode: difference;
+                    z-index: 9999;
+                    transition: transform 0.1s ease;
+                `;
+                document.body.appendChild(c);
+                return c;
+            })();
+            
+            cursor.style.left = e.clientX - 10 + 'px';
+            cursor.style.top = e.clientY - 10 + 'px';
+        });
+
+     
     </script>
 </body>
 </html>
