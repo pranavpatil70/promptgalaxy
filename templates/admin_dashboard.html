@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+</head>
+<body>
+    <h2>📸 All Form Submissions</h2>
+    <a href="{{ url_for('admin_logout') }}">Logout</a>
+    <br><br>
+
+    {% for s in submissions %}
+        <div style="border:1px solid #ccc; padding:10px; margin-bottom:15px;">
+            <p><strong>Name:</strong> {{ s.name }}</p>
+            <p><strong>Email:</strong> {{ s.email }}</p>
+            <p><strong>Title:</strong> {{ s.title }}</p>
+            <p><strong>Description:</strong> {{ s.description }}</p>
+            <p><strong>Instagram:</strong> {{ s.instagram }}</p>
+            <p><strong>Twitter:</strong> {{ s.twitter }}</p>
+
+            {% if s.image_id %}
+                <p><a href="{{ url_for('admin_download', file_id=s.image_id) }}">⬇ Download Image</a></p>
+            {% else %}
+                <p>No image uploaded.</p>
+            {% endif %}
+        </div>
+    {% endfor %}
+</body>
+</html>
