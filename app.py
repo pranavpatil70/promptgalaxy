@@ -1,6 +1,6 @@
 from io import BytesIO
 from bson import ObjectId
-from flask import Flask, render_template, request, redirect, send_file, session, url_for
+from flask import Flask, render_template, request, redirect, send_file, session, url_for, jsonify
 from pymongo import MongoClient
 import gridfs
 
@@ -47,7 +47,19 @@ def upload():
         "image_id": image_id
     })
 
-    return redirect('/success')
+    # Example avatar: initials from name
+    avatar = ''.join([x[0] for x in name.split()][:2]).upper()
+
+    return jsonify({
+        "success": True,
+        "image_url": url_for('static', filename='images/your_saved_image.jpg'),  # or your GridFS route
+        "title": title,
+        "description": description,
+        "name": name,
+        "avatar": avatar,
+        "instagram": instagram,
+        "twitter": twitter
+    })
 
 @app.route('/success')
 def success():
@@ -85,6 +97,20 @@ def admin_download(file_id):
 
     file = fs.get(ObjectId(file_id))
     return send_file(file, as_attachment=True, download_name=f"{file_id}.png")
+
+# Delete Submission
+@app.route("/admin/delete/<prompt_id>", methods=["POST"])
+def admin_delete(prompt_id):
+    if not session.get("admin"):
+        return redirect(url_for("admin_login"))
+    prompt = submissions.find_one({"_id": ObjectId(prompt_id)})
+    if prompt and prompt.get("image_id"):
+        try:
+            fs.delete(prompt["image_id"])
+        except Exception:
+            pass  # Ignore if already deleted or not found
+    submissions.delete_one({"_id": ObjectId(prompt_id)})
+    return redirect(url_for("admin_dashboard"))
 
 # Logout
 @app.route("/admin/logout")

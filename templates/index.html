@@ -1274,6 +1274,621 @@
             opacity: 1;
             transform: translateY(0);
         }
+          * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: radial-gradient(ellipse at center, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+                        radial-gradient(ellipse at 80% 20%, rgba(6, 255, 165, 0.1) 0%, transparent 50%),
+                        radial-gradient(ellipse at 20% 80%, rgba(255, 107, 107, 0.1) 0%, transparent 50%);
+            animation: bgShift 20s ease-in-out infinite;
+        }
+
+        @keyframes bgShift {
+            0%, 100% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.1); }
+        }
+
+        /* Floating particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--accent);
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            background: rgba(10, 10, 10, 0.7);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -2px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+            filter: drop-shadow(0 0 20px rgba(139, 92, 246, 0.5));
+        }
+
+        .nav-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .theme-toggle {
+            background: var(--glass);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 0.8rem;
+            border-radius: 50%;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+        }
+
+        .theme-toggle:hover {
+            background: var(--accent);
+            transform: rotate(180deg) scale(1.1);
+            box-shadow: 0 0 30px rgba(139, 92, 246, 0.5);
+        }
+
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.3) 0%, transparent 70%);
+            transform: translate(-50%, -50%);
+            animation: pulse 4s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; }
+            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.1; }
+        }
+
+        .hero h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(3rem, 8vw, 8rem);
+            font-weight: 800;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 50%, var(--accent-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.1;
+            letter-spacing: -3px;
+            animation: titleGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes titleGlow {
+            0%, 100% { filter: drop-shadow(0 0 10px rgba(139, 92, 246, 0.3)); }
+            50% { filter: drop-shadow(0 0 30px rgba(139, 92, 246, 0.6)); }
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            max-width: 700px;
+            margin: 0 auto 3rem;
+            color: var(--text-secondary);
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 0.5s forwards;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-secondary) 100%);
+            color: white;
+            border: none;
+            padding: 1.5rem 3rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 10px 40px rgba(139, 92, 246, 0.3);
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 0.8s forwards;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.7s;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 20px 60px rgba(139, 92, 246, 0.5);
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 6rem 2rem;
+            position: relative;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+            position: relative;
+        }
+
+        .section-title::before {
+            content: '';
+            position: absolute;
+            top: -2rem;
+            left: 50%;
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-secondary));
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        .section-title h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            padding: 2rem 0;
+        }
+
+        .prompt-card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .prompt-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .prompt-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(6, 255, 165, 0.1));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+
+        .prompt-card:hover {
+            transform: translateY(-10px) rotateX(5deg);
+            box-shadow: 0 25px 80px rgba(139, 92, 246, 0.3);
+            border-color: rgba(139, 92, 246, 0.5);
+        }
+
+        .prompt-card:hover::before {
+            opacity: 1;
+        }
+
+        .prompt-image {
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 4/5;
+        }
+
+        .prompt-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+            filter: brightness(0.9);
+        }
+
+        .prompt-card:hover .prompt-image img {
+            transform: scale(1.1);
+            filter: brightness(1.1);
+        }
+
+        .prompt-image::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            pointer-events: none;
+        }
+
+        .prompt-content {
+            padding: 2rem;
+            position: relative;
+        }
+
+        .copy-button {
+            position: absolute;
+            top: -25px;
+            right: 2rem;
+            background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 0.8rem 1.5rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(139, 92, 246, 0.4);
+            z-index: 10;
+        }
+
+        .copy-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(139, 92, 246, 0.6);
+        }
+
+        .prompt-content h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .prompt-text {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.7;
+            max-height: 120px;
+            overflow-y: auto;
+            margin-bottom: 1.5rem;
+            padding-right: 0.5rem;
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent) transparent;
+        }
+
+        .prompt-text::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .prompt-text::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 2px;
+        }
+
+        .prompt-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .social-links a {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            padding: 0.5rem;
+            border-radius: 50%;
+            background: var(--glass);
+        }
+
+        .social-links a:hover {
+            color: var(--accent);
+            background: rgba(139, 92, 246, 0.2);
+            transform: translateY(-3px);
+        }
+
+        .submit-section {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border-radius: 32px;
+            padding: 3rem;
+            max-width: 600px;
+            margin: 0 auto;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            font-size: 1rem;
+            background: var(--glass);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+            background: rgba(139, 92, 246, 0.05);
+        }
+
+        .submit-button {
+            width: 100%;
+            background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+            color: white;
+            border: none;
+            border-radius: 16px;
+            padding: 1.2rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 1rem;
+        }
+
+        .submit-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(139, 92, 246, 0.4);
+        }
+
+        .notification {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem 2rem;
+            color: var(--text-primary);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            transform: translateX(400px);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            max-width: 350px;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            border-left: 4px solid var(--success);
+        }
+
+        footer {
+            background: var(--bg-secondary);
+            padding: 4rem 2rem 2rem;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            margin-top: 6rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+            background: rgba(139, 92, 246, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Mobile optimizations */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 3rem;
+            }
+            
+            .gallery {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .container {
+                padding: 3rem 1rem;
+            }
+            
+            .submit-section {
+                padding: 2rem;
+                margin: 0 1rem;
+            }
+            
+            .notification {
+                top: 1rem;
+                right: 1rem;
+                left: 1rem;
+                max-width: none;
+                transform: translateY(-200px);
+            }
+            
+            .notification.show {
+                transform: translateY(0);
+            }
+        }
+
+        /* Scroll animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.6s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
 
     </style>
 </head>
@@ -1715,6 +2330,53 @@ Black and white high -fashion editorial portrait of a male, wearing a loose whit
             </div>
 
         </div>
+                    <!-- Prompt 17 -->
+            <div class="prompt-card">
+                <div class="prompt-image">
+                      <img src="{{ url_for('static', filename='images/17.jpg') }}" alt="">" alt="Glamorous Fashion Portrait">
+                </div>
+                <div class="prompt-content">
+                    <button class="copy-button" onclick="copyPrompt(this)">
+                        <i class="fas fa-copy"></i> Copy Magic
+                    </button>
+                    <h3>Garba outfit</h3>
+                    <div class="prompt-text">
+Convert, 4k HD realistic, A stunning portrait of a young Indian woman with long, dark, wavy hair cascading over her shoulders.
+She is wearing a garba outfit , a necklace and some bangles,and ring.She is looking in the camera with a beautiful smile, with a soft, serene expression. I want same face as I uploaded no alternation 100 percent same. The background is garba coded, warm-toned , illuminated by a warm light, creating a distinct, soft-edged shadow of her profile, The overall mood is retro and artistic                    </div>
+                    <div class="prompt-meta">
+                        <div class="user-info">
+                            <div class="user-avatar">MD</div>
+                            <span>Manaswi Dusane</span>
+                        </div>
+                        <div class="social-links">
+                        </div>
+                    </div>
+                </div>
+            </div>
+                       
+            <div class="prompt-card">
+                <div class="prompt-image">
+                      <img src="{{ url_for('static', filename='images/18.png') }}" alt="">" alt="Glamorous Fashion Portrait">
+                </div>
+                <div class="prompt-content">
+                    <button class="copy-button" onclick="copyPrompt(this)">
+                        <i class="fas fa-copy"></i> Copy Magic
+                    </button>
+                    <h3>Elegent yet Playful</h3>
+                    <div class="prompt-text">
+                        A young women sitting casually on a wooden stool against a plain pastel green background. She is wearing black sunglasses, a white sweatshirt with a cartoon bear graphic on the front, dark pinstriped pants, white socks, and black sneakers with white stripes. His pose is relaxed, with one hand resting on his chin and the other on his knee, giving off a modern, stylish, and minimalist vibe. The overall composition emphasizes simplicity, clean aesthetics, and a playful yet fashionable look. Keep the overall face structure and everything about the hairstyles and messy hair like the attached image
+                    </div>
+                    <div class="prompt-meta">
+                        <div class="user-info">
+                            <div class="user-avatar">TS</div>
+                            <span>Tanvi Sone</span>
+                        </div>
+<div class="social-links">
+                            <a href="https://instagram.com/_tanvi_25" target="_blank"><i class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         
     </section>
     
@@ -1876,27 +2538,48 @@ Black and white high -fashion editorial portrait of a male, wearing a loose whit
         }
         
         // Form submission with animation
-        document.getElementById('prompt-form').addEventListener('submit', function(e) {
+        document.getElementById('prompt-form').addEventListener('submit', async function(e) {
             e.preventDefault();
-            
-            // Animate submit button
-            const submitBtn = this.querySelector('.submit-button');
-            const originalText = submitBtn.innerHTML;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Launching...';
-            submitBtn.disabled = true;
-            
-            setTimeout(() => {
-                showNotification('Your legendary prompt has been launched into the galaxy!', 'success');
-                submitBtn.innerHTML = '<i class="fas fa-check"></i> Launched!';
-                
-                setTimeout(() => {
-                    submitBtn.innerHTML = originalText;
-                    submitBtn.disabled = false;
-                    this.submit()
-                    this.reset();
-                }, 2000);
-            }, 1500);
+            const formData = new FormData(this);
+            const response = await fetch('/upload', { method: 'POST', body: formData });
+            const data = await response.json();
+            if (data.success) {
+                // Dynamically add the new card to the gallery
+                addPromptCardToGallery(data.prompt);
+            }
         });
+        
+        // Function to add prompt card to gallery
+        function addPromptCardToGallery(prompt) {
+            const gallery = document.querySelector('.gallery');
+            const card = document.createElement('div');
+            card.className = 'prompt-card visible';
+            card.innerHTML = `
+                <div class="prompt-image">
+                    <img src="${prompt.image_url}" alt="${prompt.title}">
+                </div>
+                <div class="prompt-content">
+                    <button class="copy-button" onclick="copyPrompt(this)">
+                        <i class="fas fa-copy"></i> Copy Magic
+                    </button>
+                    <h3>${prompt.title}</h3>
+                    <div class="prompt-text">${prompt.description}</div>
+                    <div class="prompt-meta">
+                        <div class="user-info">
+                            <div class="user-avatar">${prompt.avatar}</div>
+                            <span>${prompt.name}</span>
+                        </div>
+                        <div class="social-links">
+                            ${prompt.instagram ? `<a href="${prompt.instagram}" target="_blank"><i class="fab fa-instagram"></i></a>` : ''}
+                            ${prompt.twitter ? `<a href="${prompt.twitter}" target="_blank"><i class="fab fa-twitter"></i></a>` : ''}
+                        </div>
+                    </div>
+                </div>
+            `;
+            gallery.prepend(card);
+            showNotification('Your legendary prompt has been launched into the galaxy!', 'success');
+            document.getElementById('prompt-form').reset();
+        }
         
         // Intersection Observer for scroll animations
         const observerOptions = {
